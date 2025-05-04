@@ -31,7 +31,8 @@ class LLM():
                 response = self.client.chat.completions.create(
                     model="gpt-4o",
                 messages=self.messages,
-                    temperature=temperature
+                    temperature=temperature,
+                    timeout = 30
                 )
             except Exception as e:
                 print(self.messages[-1])

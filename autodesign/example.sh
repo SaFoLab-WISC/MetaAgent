@@ -1,1 +1,1 @@
-python3 run.py --mas_path test_mas.json --cases_path test_cases_debug.jsonl --task_description "Build a multi-agent system that develop software. The multi-agent system could also saved the developed software to a local file system and write a README for user."
+python run.py --mas_path test_mas.json  --task_description "Build a multi-agent system that develop software. The multi-agent system could also saved the developed software to a local file system and write a README for user."

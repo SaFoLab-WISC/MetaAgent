@@ -1,15 +1,14 @@
 # Step 1. Initial Build
 import sys
+sys.path.append("../baseclass")
+sys.path.append(".")
 import argparse
 import json
 from colorama import init, Fore, Style
-sys.path.append("../baseclass")
 from FSM_Gen import gen as generate_MAS 
 from MultiAgent import MultiAgentSystem
 from prompts import *
-from CaseGen import case_gen
-from evolution.general_evolve import update_mas
-  
+from Optimization import optimize_fsm
 
 # 初始化 colorama
 init(autoreset=True)
@@ -26,64 +25,24 @@ def log(message, level="info"):
     else:
         print(message)
 
-def main(mas_saving_path, cases_saving_path, task_description):
+def main(mas_saving_path, task_description):
     try:
-        log("=== Step 1: Initial MAS Generation ===", "info")
+        log("=== Step 1: Initial Multi-Agent System Generation ===", "info")
         agent_dict, fsm, token_cost = generate_MAS(task_description, mas_saving_path)
         if agent_dict is None or fsm is None:
             log("MAS Generation failed.", "error")
             sys.exit(1)
         log(f"MAS Generation completed. Token Cost: {token_cost}", "success")
         
-        # 添加evolution循环
-        max_iterations = 2
-        for iteration in range(max_iterations):
-            log(f"\n=== Evolution Iteration {iteration + 1}/{max_iterations} ===", "info")
-            
-            # 为每次迭代生成新的文件路径
-            current_mas_path = f"mas_iteration_{iteration + 1}.json"
-            current_cases_path = f"cases_iteration_{iteration + 1}.jsonl"
-            
-            # 如果是第一次迭代，复制初始MAS文件
-            if iteration == 0:
-                import shutil
-                shutil.copy(mas_saving_path, current_mas_path)
-            
-            log("=== Step 2: Cases Generation ===", "info")
-            cases = case_gen(task_description, current_mas_path)
-            with open(current_cases_path, "w") as f:
-                for case in cases:
-                    f.write(json.dumps(case) + "\n")
-            log(f"Cases Generation completed. {len(cases)} cases generated.", "success")
-            
-            log("=== Step 3: Testing on Cases ===", "info")
-            with open(current_mas_path, "r") as f:
-                mas_dict = json.load(f)
-            agents_json = mas_dict["agents"]
-            states_json = mas_dict['states']
-            multi_agent = MultiAgentSystem(agents_json, states_json)
-            failed_log = []
-            
-            for case in cases:
-                log(f"Testing case: {case}", "info")
-                multi_agent.start(user_input=case)
-                log_entry = multi_agent.get_running_log()
-                if "|completed|" not in log_entry:
-                    failed_log.append(log_entry)
-                    log("A case has failed.", "warning")
-            
-            log(f"Testing completed. {len(failed_log)} cases failed.", "success")
-            
-            # 即使没有失败的测试用例，也要进行一次evolution优化
-            if len(failed_log) == 0:
-                log("All tests passed! But still doing one more evolution for optimization.", "info")
-                failed_log = [multi_agent.get_running_log()]  # 使用最后一次的运行日志进行优化
-                
-            log("=== Step 4: Evolution ===", "info")
-            # 更新下一次迭代的MAS文件路径
-            next_mas_path = f"mas_iteration_{iteration + 2}.json"
-            update_mas(task_description, current_mas_path, failed_log, next_mas_path)
-            log(f"Evolution step {iteration + 1} completed.", "success")
+        
+        log("== Step 2: Optimizing the Multi-Agent System ==",'info')
+        optimized_fsm = optimize_fsm(mas_saving_path)
+        #with open("optimized_mas.json",'w') as f:
+        #    json.dump(f,optimize_fsm)
+        #print(optimized_fsm)
+        log("Optimized!")
+
+
             
     except Exception as e:
         log(f"An unexpected error occurred: {e}", "error")
@@ -98,12 +57,6 @@ if __name__ == "__main__":
         help="Path to save the Multi-Agent System JSON file."
     )
     parser.add_argument(
-        "--cases_path",
-        type=str,
-        default="test_cases_debug.jsonl",
-        help="Path to save the generated test cases."
-    )
-    parser.add_argument(
         "--task_description",
         type=str,
         default='''Build a Multi-Agent system which can train machine learning model based on given dataset. 
@@ -113,7 +66,7 @@ And report the expected metrics (like F-1 score, RMSE and etc. ) on test dataset
     )
     
     args = parser.parse_args()
-    main(args.mas_path, args.cases_path, args.task_description)
+    main(args.mas_path, args.task_description)
 '''Build a Multi-Agent system which can train machine learning model based on given dataset. 
 And report the expected metrics (like F-1 score, RMSE and etc. ) on test dataset to user.''',
 

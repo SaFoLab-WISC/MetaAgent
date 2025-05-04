@@ -37,7 +37,7 @@ def Generate_Agent_Description(task,tools):
     '''
 
     
-    agent_generator=LLM(prompt_template,use_azure=False)
+    agent_generator=LLM(prompt_template,use_azure=True)
     agents=agent_generator.chat(message=f"The General Task is {task} and the tools you can select are {tools}. One agent can equipped with various tools and it can also act without tools. Not every tool is necessary for the task! ")
     
     agent_json=agents.split("```")[-2].replace("json","")
@@ -160,7 +160,7 @@ def Generate_FSM(task, agent_dict):
     6. The transitions should consider as many as possible situations. Which consisit a roadmap for Multi-Agent System in deployment stage.
     '''
 
-    fsm_generator = LLM(prompt_template,use_azure=False)
+    fsm_generator = LLM(prompt_template,use_azure=True)
     fsm_response = fsm_generator.chat(message=f"The task is: {task}\nThe agents are: {json.dumps(agent_dict, indent=2)}\nNow generate the FSM")
     
     # Extract the JSON part from the response
@@ -224,7 +224,7 @@ def validate_fsm(fsm, agent_dict):
     return True
 
 # Update the gen function to use Generate_FSM instead of Generate_DAG
-def gen(task,mas_saving_path):
+def gen(task,mas_saving_path="./exp.json"):
     #role_dict, llm_1 = Generate_Role_Description(task)
     print("Generateing Agent Description...")
     agent_dict, llm_2 = Generate_Agent_Description(task=task, tools=tool_list)
@@ -249,4 +249,4 @@ def gen(task,mas_saving_path):
         json.dump({"agents":agent_dict,"states":fsm},f)
     return agent_dict, fsm, token_cost
 
-#gen("Design a multi-agent system to solve the following task: \n1. Given a list of numbers, find the sum of all the numbers.\n2. Given the sum, find the product of all the numbers.\n3. Print the product.")
+gen("Design a Multi-Agent System for HouseHold.This is a multi room environment, includes living room, rest room, kicthen, bed room. Tasks includes cleaning dishes, collect food, clean rubbish, take books.   Each agent can Get nearby environment visions and act cooperatorly to solve some task.  ")

@@ -120,4 +120,23 @@ Task: \n{task}
     #SPP = f'''Please solve the task step by step. \n Task is {task}.'''
     return llm.chat(SPP)
 
+def debate_refine(task):
+    # First use the debate approach to get a comprehensive answer
+    debate_answer = llm_debate(task)
+    
+    # Then use self-refinement on the debate answer
+    llm = LLM(use_azure=True)
+    SELF_REFINE = f'''Please add some feedback to this debate-generated answer. 
+Task is: {task}
+Debate-generated answer is: {debate_answer}'''
+    
+    feedback = llm.chat(SELF_REFINE)
+    
+    REFINE = f'''Please refine the answer based on the feedback. Give a final, definitive answer.
+Task is: {task}
+Debate-generated answer is: {debate_answer}
+Feedback is: {feedback}'''  
+
+    return llm.chat(REFINE, temperature=0.7)
+
 

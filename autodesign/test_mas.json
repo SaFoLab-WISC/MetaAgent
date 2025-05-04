@@ -2,24 +2,24 @@
     "agents": [
         {
             "agent_id": "0",
-            "name": "DataProcessor",
-            "system_prompt": "Responsible for processing the given dataset for training and testing the machine learning model. It preprocesses the data, handles feature engineering, and prepares the data for model training and evaluation.",
+            "name": "SoftwareDeveloper",
+            "system_prompt": "You are SoftwareDeveloper, responsible for designing and developing software. Your goal is to write clean, efficient, and functional code based on the given requirements. You should collaborate with other agents to ensure the software meets all specifications.",
             "tools": [
                 "code_interpreter"
             ]
         },
         {
             "agent_id": "1",
-            "name": "ModelTrainer",
-            "system_prompt": "Responsible for training the machine learning model on the processed dataset. It selects the appropriate algorithm, tunes hyperparameters, and fits the model to the training data.",
-            "tools": ["code_interpreter"]
+            "name": "FileManager",
+            "system_prompt": "You are FileManager, responsible for saving developed software to the local file system. Your goal is to ensure all files are correctly stored and organized for easy access and retrieval. You should work closely with SoftwareDeveloper to receive the final code and manage its storage.",
+            "tools": []
         },
         {
             "agent_id": "2",
-            "name": "Evaluator",
-            "system_prompt": "Responsible for evaluating the trained model on the test dataset and reporting the expected metrics (e.g., F-1 score, RMSE) to the user. It assesses the model's performance and provides insights on its effectiveness.",
+            "name": "DocumentationWriter",
+            "system_prompt": "You are DocumentationWriter, responsible for writing a README for users. Your goal is to create clear, concise, and informative documentation that helps users understand and use the software effectively. You should gather information from SoftwareDeveloper about the software features and functionality.",
             "tools": [
-                "search_engine", "code_interpreter"
+                "search_engine"
             ]
         }
     ],
@@ -28,55 +28,73 @@
             {
                 "state_id": "1",
                 "agent_id": "0",
-                "instruction": "Process the given dataset for training and testing the machine learning model. Perform data preprocessing and feature engineering.",
+                "instruction": "Design and develop the software based on requirements.",
                 "is_initial": true,
                 "is_final": false,
                 "listener": [
-                    "1"
+                    "1",
+                    "2"
                 ]
             },
             {
                 "state_id": "2",
                 "agent_id": "1",
-                "instruction": "Train the machine learning model on the processed dataset. Select algorithm, tune hyperparameters, and fit the model to the training data.",
+                "instruction": "Save the developed software to the local file system.",
                 "is_initial": false,
                 "is_final": false,
                 "listener": [
+                    "0",
                     "2"
                 ]
             },
             {
                 "state_id": "3",
                 "agent_id": "2",
-                "instruction": "Evaluate the trained model on the test dataset. Report expected metrics (e.g., F-1 score, RMSE) to the user.",
+                "instruction": "Write a README for the software based on the information from SoftwareDeveloper.",
                 "is_initial": false,
                 "is_final": false,
-                "listener": []
+                "listener": [
+                    "0",
+                    "1"
+                ]
             },
             {
                 "state_id": "4",
-                "agent_id": "2",
-                "instruction": "Submit the final metrics to the user. Follow the <submit>: Final Metrics format.",
+                "agent_id": "0",
+                "instruction": "Use <|submit|> <FILL IN THE FINAL ANSWER> format to submit the final answer Submit the developed software and README documentation.",
                 "is_initial": false,
                 "is_final": true,
-                "listener": []
+                "listener": [
+                    "1",
+                    "2"
+                ]
             }
         ],
         "transitions": [
             {
                 "from_state": "1",
                 "to_state": "2",
-                "condition": "If dataset processing is completed successfully"
+                "condition": "If the software is developed successfully."
             },
             {
                 "from_state": "2",
                 "to_state": "3",
-                "condition": "If model training is successful"
+                "condition": "If the software is saved successfully."
             },
             {
                 "from_state": "3",
                 "to_state": "4",
-                "condition": "If model evaluation is completed and metrics are ready to report"
+                "condition": "If the README is written successfully."
+            },
+            {
+                "from_state": "2",
+                "to_state": "1",
+                "condition": "If there are issues with the saved software that require redevelopment."
+            },
+            {
+                "from_state": "3",
+                "to_state": "2",
+                "condition": "If the README requires additional information from the saved software."
             }
         ]
     }

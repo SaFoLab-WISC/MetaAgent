@@ -1,0 +1,172 @@
+{
+    "agents": [
+        {
+            "agent_id": "0",
+            "name": "TaskPlanner",
+            "system_prompt": "You are a housekeeping Task Planner. Your responsibility is to analyze the virtual home environment and create a prioritized plan for cleaning and organizing the home. You should identify which areas need attention and determine the most efficient sequence for cleaning tasks.",
+            "tools": []
+        },
+        {
+            "agent_id": "1",
+            "name": "KitchenCleaner",
+            "system_prompt": "You are a Kitchen Cleaning specialist. Your goal is to clean and organize the kitchen according to the task plan. You should ensure all dishes are cleaned or put away, countertops are wiped, appliances are cleaned, and food items are properly stored.",
+            "tools": []
+        },
+        {
+            "agent_id": "2",
+            "name": "LivingRoomOrganizer",
+            "system_prompt": "You are a Living Room Organizer. Your goal is to tidy and organize the living room according to the task plan. You should ensure furniture is arranged properly, items are put away, surfaces are dusted, and the floor is clean.",
+            "tools": []
+        },
+        {
+            "agent_id": "3",
+            "name": "BedroomTidier",
+            "system_prompt": "You are a Bedroom Tidying specialist. Your goal is to make beds, organize clothing, clear surfaces, and ensure bedrooms are neat and orderly according to the task plan.",
+            "tools": []
+        },
+        {
+            "agent_id": "4",
+            "name": "BathroomCleaner",
+            "system_prompt": "You are a Bathroom Cleaning specialist. Your goal is to clean sinks, toilets, showers, and floors, ensuring the bathroom is sanitized and organized according to the task plan.",
+            "tools": []
+        },
+        {
+            "agent_id": "5",
+            "name": "FinalInspector",
+            "system_prompt": "You are the Final Inspector. Your goal is to verify all cleaning tasks have been completed properly. You should check each room against the original task plan and ensure nothing has been missed.",
+            "tools": []
+        }
+    ],
+    "states": {
+        "states": [
+            {
+                "state_id": "1",
+                "agent_id": "0",
+                "instruction": "Observe the virtual home environment and create a prioritized cleaning plan. Identify which areas need attention and which tasks should be completed first.",
+                "is_initial": true,
+                "is_final": false,
+                "listener": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ]
+            },
+            {
+                "state_id": "2",
+                "agent_id": "1",
+                "instruction": "Clean and organize the kitchen according to the task plan. Focus on dishes, countertops, appliances, and food storage.",
+                "is_initial": false,
+                "is_final": false,
+                "listener": [
+                    "5"
+                ]
+            },
+            {
+                "state_id": "3",
+                "agent_id": "2",
+                "instruction": "Tidy and organize the living room according to the task plan. Focus on furniture arrangement, putting items away, dusting surfaces, and ensuring the floor is clean.",
+                "is_initial": false,
+                "is_final": false,
+                "listener": [
+                    "5"
+                ]
+            },
+            {
+                "state_id": "4",
+                "agent_id": "3",
+                "instruction": "Make beds, organize clothing, clear surfaces, and ensure bedrooms are neat and orderly according to the task plan.",
+                "is_initial": false,
+                "is_final": false,
+                "listener": [
+                    "5"
+                ]
+            },
+            {
+                "state_id": "5",
+                "agent_id": "4",
+                "instruction": "Clean sinks, toilets, showers, and floors, ensuring the bathroom is sanitized and organized according to the task plan.",
+                "is_initial": false,
+                "is_final": false,
+                "listener": [
+                    "5"
+                ]
+            },
+            {
+                "state_id": "6",
+                "agent_id": "5",
+                "instruction": "Verify all cleaning tasks have been completed properly. Check each room against the original task plan and ensure nothing has been missed.",
+                "is_initial": false,
+                "is_final": false,
+                "listener": [
+                    "0",
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                ]
+            },
+            {
+                "state_id": "7",
+                "agent_id": "0",
+                "instruction": "<|submit|>",
+                "is_initial": false,
+                "is_final": true,
+                "listener": []
+            }
+        ],
+        "transitions": [
+            {
+                "from_state": "1",
+                "to_state": "2",
+                "condition": "If a comprehensive cleaning plan has been created and kitchen cleaning is prioritized"
+            },
+            {
+                "from_state": "2",
+                "to_state": "3",
+                "condition": "If kitchen cleaning tasks have been completed successfully"
+            },
+            {
+                "from_state": "3",
+                "to_state": "4",
+                "condition": "If living room organizing tasks have been completed successfully"
+            },
+            {
+                "from_state": "4",
+                "to_state": "5",
+                "condition": "If bedroom tidying tasks have been completed successfully"
+            },
+            {
+                "from_state": "5",
+                "to_state": "6",
+                "condition": "If bathroom cleaning tasks have been completed successfully"
+            },
+            {
+                "from_state": "6",
+                "to_state": "7",
+                "condition": "If final inspection confirms all cleaning tasks have been completed satisfactorily"
+            },
+            {
+                "from_state": "6",
+                "to_state": "2",
+                "condition": "If final inspection identifies kitchen tasks that need to be redone"
+            },
+            {
+                "from_state": "6",
+                "to_state": "3",
+                "condition": "If final inspection identifies living room tasks that need to be redone"
+            },
+            {
+                "from_state": "6",
+                "to_state": "4",
+                "condition": "If final inspection identifies bedroom tasks that need to be redone"
+            },
+            {
+                "from_state": "6",
+                "to_state": "5",
+                "condition": "If final inspection identifies bathroom tasks that need to be redone"
+            }
+        ]
+    }
+}

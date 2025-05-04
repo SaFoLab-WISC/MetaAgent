@@ -1,3 +1,0 @@
-"\nTrain a Random Forest model to predict survival on the Titanic dataset.\nDataset path: /Users/a11/Desktop/MetaAgent/MetaAgent/ml_benchmark/04_titanic/split_train.csv\n"
-"\nTrain a Linear Regression model to predict house prices based on a given dataset.\nDataset path: /Users/a11/Desktop/MetaAgent/MetaAgent/ml_benchmark/05_house_prices/train.csv\n"
-"\nTrain a Neural Network model to classify images of handwritten digits.\nDataset path: /Users/a11/Desktop/MetaAgent/MetaAgent/ml_benchmark/06_mnist/train.csv\n"

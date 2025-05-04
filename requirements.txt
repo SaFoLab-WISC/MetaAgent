@@ -1,4 +1,5 @@
 networkx
+colorama
 matplotlib
 pydantic
 PyYAML
@@ -9,3 +10,6 @@ flask
 flask-cors
 flask-socketio
 openai
+nbformat 
+nbclient
+argparsep

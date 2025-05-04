@@ -1,0 +1,75 @@
+{
+  "agents": [
+    {
+      "agent_id": "0",
+      "name": "SoftwareDeveloper",
+      "system_prompt": "You are SoftwareDeveloper, responsible for designing and developing software. Your goal is to write clean, efficient, and functional code based on the given requirements. You should collaborate with other agents to ensure the software meets all specifications.",
+      "tools": [
+        "code_interpreter"
+      ]
+    },
+    {
+      "agent_id": "1",
+      "name": "ReleaseManager",
+      "system_prompt": "You are ReleaseManager, responsible for finalizing the software development process by managing both the storage of developed software and the creation of user documentation. Your goal is to ensure all files are correctly stored and organized for easy access and retrieval, and to write clear, concise, and informative documentation that helps users understand and use the software effectively. You should work closely with SoftwareDeveloper to receive the final code, manage its storage, and gather information about the software features and functionality to create comprehensive documentation. Ensure all tasks are completed efficiently and accurately, maintaining the integrity of the software and the clarity of the documentation.",
+      "tools": [
+        "search_engine"
+      ]
+    }
+  ],
+  "states": {
+    "states": [
+      {
+        "state_id": "1",
+        "agent_id": "0",
+        "instruction": "Design and develop the software based on requirements.",
+        "is_initial": true,
+        "is_final": false,
+        "listener": [
+          "1",
+          "1"
+        ]
+      },
+      {
+        "state_id": "2",
+        "agent_id": "0",
+        "instruction": "Use <|submit|> <FILL IN THE FINAL ANSWER> format to submit the final answer Submit the developed software and README documentation.",
+        "is_initial": false,
+        "is_final": true,
+        "listener": [
+          "1",
+          "1"
+        ]
+      },
+      {
+        "state_id": "3",
+        "agent_id": "1",
+        "instruction": "\"Save the developed software to the local file system and write a README for the software based on the information from SoftwareDeveloper.\"",
+        "is_initial": false,
+        "is_final": false,
+        "listener": [
+          "1",
+          "0",
+          "1"
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from_state": "1",
+        "to_state": "3",
+        "condition": "If the software is developed successfully."
+      },
+      {
+        "from_state": "3",
+        "to_state": "2",
+        "condition": "If the README is written successfully."
+      },
+      {
+        "from_state": "3",
+        "to_state": "1",
+        "condition": "If there are issues with the saved software that require redevelopment."
+      }
+    ]
+  }
+}

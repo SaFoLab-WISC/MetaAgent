@@ -1,31 +1,4 @@
 # self optimization method, iterative ask whether two stage can be merged
-# example input path: C:\zhangyaolun\桌面\ICML\MetaAgent\examples\mlbench\ml_round1.json
-# example calling LLM: C:\zhangyaolun\桌面\ICML\MetaAgent\baseclass\LLM.py
-# example code:
-'''
-Algorithm 1 FSM State Optimization
-Require: State set S
-Ensure: Optimized state set S
-1: function LLM(state1, state2)
-2: return true if state1 and state2 can be merged, false
-otherwise
-3: end function
-4: procedure OptimizeFSM(S)
-5: repeat
-6: merged ← f alse
-7: for each pair (si
-, sj ) in S do
-8: if LLM(si
-, sj ) then
-9: Merge si and sj into a new state sij
-10: Update S by replacing si and sj with sij
-11: merged ← true
-12: break
-13: end if
-14: end for
-15: until merged = f alse
-16: end procedure
-'''
 
 import json
 import os
@@ -549,8 +522,8 @@ The most effective optimization is often reducing the number of agents by mergin
         json.dump(optimized_fsm, f, indent=2)
     
     print(f"Optimized FSM saved to {output_path}")
-    print(f"Reduced from original: {len(fsm_data['agents'])} agents to {len(agents)} agents")
-    print(f"Reduced from original: {len(fsm_data['states']['states']) if nested_format else len(fsm_data['states'])} states to {len(states)} states")
+    #print(f"Reduced from original: {len(fsm_data['agents'])} agents to {len(agents)} agents")
+    #print(f"Reduced from original: {len(fsm_data['states']['states']) if nested_format else len(fsm_data['states'])} states to {len(states)} states")
     
     return optimized_fsm
 

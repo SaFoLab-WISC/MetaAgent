@@ -19,3 +19,5 @@ def run_mas_test(mas_json_path, test):
     
     return result
 
+task = '''Build a Snake Game, save it to ./evaluate/examples/ '''
+run_mas_test("test_mas_optimized.json",task)

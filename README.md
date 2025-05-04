@@ -7,7 +7,8 @@
 </p>
 
 ## 🎆 News
-- [2024/10/17] Release the first version of MetaAgent.
+
+- [2025/5/1] MetaAgent has been accepted to ICML 2025!!!
 
 ## 👀 Overview  
 ![image](/images/compare.png)
@@ -42,16 +43,18 @@ To set up the environment of MetaAgent, please run the following command:
 pip install -r requirements.txt
 ```
 
-### Run
+### Design the Multi-Agent System
 - In the code base:  
 ```bash
 cd autodesign
 bash example.sh
-```  
-- In the interface:  
+```    
+
+### Deploy the Multi-Agent System
+Full in the test case and the path of Multi-Agent System.
 ```bash
-cd web
-python app.py
+cd autodesign
+python evaluate/general_test.py 
 ```
 
 ## 🤝 Support  
