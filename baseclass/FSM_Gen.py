@@ -6,11 +6,11 @@ Step 3. Generate DAG
 #from llmcenter import ChatClient
 import networkx as nx
 import matplotlib.pyplot as plt
-from LLM import LLM
+from baseclass.LLM import LLM
 import json
 import networkx as nx
-from MultiAgent import MultiAgentSystem
-from prompts import *
+from baseclass.MultiAgent import MultiAgentSystem
+from baseclass.prompts import *
 import os
 import logging
 
@@ -97,7 +97,6 @@ tools = [
 tool_list=["code_interpreter","search_engine"]
 
 import json
-from LLM import LLM
 
 def Generate_FSM(task, agent_dict):
     prompt_template = '''

@@ -4,11 +4,10 @@ import json
 # Given the task description and the generated FSM, generate the test cases.
 # For several terms.
 import sys
-sys.path.append("..")
-sys.path.append("../baseclass")
+
 import json
 import os
-from LLM import LLM
+from baseclass.LLM import LLM
 def extract_substrings(string, s_start, s_end):
     results = []
     start_len = len(s_start)

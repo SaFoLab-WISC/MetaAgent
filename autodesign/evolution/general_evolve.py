@@ -2,11 +2,10 @@ import json
 import os
 import re
 import sys
-sys.path.append("..")
-sys.path.append("../baseclass")
-from LLM import LLM
+
+from baseclass.LLM import LLM
 #from evo_prompts import *
-from prompts import *
+from baseclass.prompts import *
 
 evolution_prompt='''
 You are a Multi-Agent System Designer. Your task is to modify the Multi-Agent System based on the existing failed task cases.
@@ -68,7 +67,7 @@ Please consider: 1. Whether the functionalities of multiple Agents can be integr
 ```
 '''
   
-def update_mas(origin_task_desc,json_file_path, fail_tasks):
+def update_mas(origin_task_desc,json_file_path, fail_tasks, new_file_path):
     # 步骤1：加载之前的JSON
     with open(json_file_path, "r") as f:
         mas_dict = json.load(f)
@@ -103,6 +102,6 @@ def update_mas(origin_task_desc,json_file_path, fail_tasks):
         data_dict = {}
 
     # 将更新后的mas写回原始的JSON文件路径
-    with open(json_file_path, "w") as f:
+    with open(new_file_path, "w") as f:
         json.dump(data_dict, f, indent=4)
 

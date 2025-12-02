@@ -34,7 +34,6 @@ import itertools
 from pathlib import Path
 
 # Add the parent directory to sys.path to be able to import baseclass module
-sys.path.append(str(Path(__file__).parent.parent))
 from baseclass.LLM import LLM
 
 def analyze_fsm_structure(fsm_data):
@@ -390,7 +389,7 @@ Your goal is to:
 2. Merge sequential or related states to reduce unnecessary transitions
 3. Minimize overall system complexity to reduce token costs
 4. Maintain the overall functionality and workflow of the system
-5. Preserve special handling in final states (like using <|submit|> format)
+5. Preserve special handling in final states (use <|submit|> format). That is output after a <|submit|> identifier.
 
 The most effective optimization is often reducing the number of agents by merging those with related or sequential responsibilities.
 """)

@@ -4,7 +4,7 @@ import json
 # export AZURE_OPENAI_API_KEY="d56bd868ff56401595c6e74357c02f04"
 # export AZURE_OPENAI_API_BASE="https://yaolun-west.openai.azure.com/"
 class LLM():
-    def __init__(self, system_prompt="You are a helpful assistant", use_azure=True):
+    def __init__(self, system_prompt="You are a helpful assistant", use_azure=False):
         self.use_azure = use_azure
         if self.use_azure:
             self.client = AzureOpenAI(
@@ -43,7 +43,7 @@ class LLM():
                 )
         else:
             response = self.client.chat.completions.create(
-                model='gpt-3.5-turbo',
+                model='gpt-4o',
                 messages=self.messages,
                 temperature=temperature
             )

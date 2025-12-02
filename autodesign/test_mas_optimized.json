@@ -1,0 +1,154 @@
+{
+  "agents": [
+    {
+      "agent_id": "0",
+      "name": "CodeInterpreterAgent",
+      "system_prompt": "This agent specializes in interpreting and executing code. Its role is to handle tasks related to coding and programming. It is responsible for executing code snippets and understanding programming logic.",
+      "tools": [
+        "code_interpreter"
+      ]
+    },
+    {
+      "agent_id": "1",
+      "name": "SearchEngineAgent",
+      "system_prompt": "This agent is proficient in using search engines to find information. Its role is to search for relevant data and resources to assist in solving the task. It is responsible for conducting online searches and retrieving useful information.",
+      "tools": [
+        "search_engine"
+      ]
+    },
+    {
+      "agent_id": "2",
+      "name": "GeneralAgent",
+      "system_prompt": "This agent is versatile and can adapt to different situations. It can perform tasks without relying on specific tools. Its role is to coordinate and communicate with other agents, as well as provide support in various aspects of the task.",
+      "tools": []
+    }
+  ],
+  "states": {
+    "states": [
+      {
+        "state_id": "1",
+        "agent_id": "0",
+        "instruction": "Interpret and execute the initial code snippet",
+        "is_initial": true,
+        "is_final": false,
+        "listener": [
+          "1",
+          "2"
+        ]
+      },
+      {
+        "state_id": "2",
+        "agent_id": "1",
+        "instruction": "Search for additional resources or information based on the output of the code",
+        "is_initial": false,
+        "is_final": false,
+        "listener": [
+          "0",
+          "2"
+        ]
+      },
+      {
+        "state_id": "3",
+        "agent_id": "2",
+        "instruction": "Coordinate and communicate between agents",
+        "is_initial": false,
+        "is_final": false,
+        "listener": [
+          "0",
+          "1"
+        ]
+      },
+      {
+        "state_id": "4",
+        "agent_id": "0",
+        "instruction": "Review the new information and adjust the code if necessary",
+        "is_initial": false,
+        "is_final": false,
+        "listener": [
+          "1",
+          "2"
+        ]
+      },
+      {
+        "state_id": "5",
+        "agent_id": "1",
+        "instruction": "Analyze the updated code output and search for further details",
+        "is_initial": false,
+        "is_final": false,
+        "listener": [
+          "0",
+          "2"
+        ]
+      },
+      {
+        "state_id": "6",
+        "agent_id": "2",
+        "instruction": "Facilitate discussion and decision-making based on the new information",
+        "is_initial": false,
+        "is_final": false,
+        "listener": [
+          "0",
+          "1"
+        ]
+      },
+      {
+        "state_id": "7",
+        "agent_id": "0",
+        "instruction": "Finalize the code and prepare the solution for submission Use <|submit|> <FILL IN THE FINAL ANSWER> format to submit the final answer",
+        "is_initial": false,
+        "is_final": true,
+        "listener": [
+          "1",
+          "2"
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from_state": "1",
+        "to_state": "2",
+        "condition": "If the initial code is executed successfully"
+      },
+      {
+        "from_state": "2",
+        "to_state": "3",
+        "condition": "If additional information is required"
+      },
+      {
+        "from_state": "3",
+        "to_state": "4",
+        "condition": "If communication reveals the need for code adjustment"
+      },
+      {
+        "from_state": "4",
+        "to_state": "5",
+        "condition": "If the code is updated"
+      },
+      {
+        "from_state": "5",
+        "to_state": "6",
+        "condition": "If further details are needed based on the updated code output"
+      },
+      {
+        "from_state": "6",
+        "to_state": "3",
+        "condition": "If a decision is made to search for more information"
+      },
+      {
+        "from_state": "5",
+        "to_state": "4",
+        "condition": "If the code needs further adjustment"
+      },
+      {
+        "from_state": "6",
+        "to_state": "4",
+        "condition": "If the decision is made to adjust the code"
+      },
+      {
+        "from_state": "5",
+        "to_state": "7",
+        "condition": "If the code is finalized"
+      }
+    ]
+  }
+}

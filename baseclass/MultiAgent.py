@@ -2,12 +2,8 @@ import os
 from openai import OpenAI
 import json
 import sys
-sys.path.append("..")
-try:
-    from LLM import LLM
-except:
-    from baseclass.LLM import LLM
 
+from baseclass.LLM import LLM
 from tools import TOOL_MAPPING
 
 class MultiAgentSystem:
@@ -60,7 +56,7 @@ class MultiAgentSystem:
 
     def update_system_prompt(self, agent):
         tools_description = ""
-        if agent['tools']:
+        if agent.get('tools'):
             tools_description = " You can use the following tools:\n"
             for tool in agent['tools']:
                 if tool == "code_interpreter":
@@ -281,7 +277,7 @@ class MultiAgentSystem:
         return self.running_log
 
     def write_current_state(self):
-        state_path = os.path.join('..', 'workspace', 'current_state.json')
+        state_path = os.path.join('workspace', 'current_state.json')
         state_data = {'state_id': self.current_state_id}
         try:
             with open(state_path, 'w') as f:
@@ -293,7 +289,9 @@ class MultiAgentSystem:
         """
         自动将当前的运行日志保存到 running_log.log 文件中
         """
-        log_path = os.path.join('..', 'workspace', 'running_log.log')
+
+        # Now this will be from the current path since we're running it from the main directory
+        log_path = os.path.join('workspace', 'running_log.log')
         try:
             with open(log_path, 'w', encoding='utf-8') as f:
                 f.write(self.running_log)
@@ -304,7 +302,7 @@ class MultiAgentSystem:
         """
         清空 running_log.log 文件内容
         """
-        log_path = os.path.join('..', 'workspace', 'running_log.log')
+        log_path = os.path.join('workspace', 'running_log.log')
         try:
             with open(log_path, 'w', encoding='utf-8') as f:
                 f.write('')

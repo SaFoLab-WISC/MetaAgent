@@ -3,12 +3,12 @@ import sys
 import argparse
 import json
 from colorama import init, Fore, Style
-sys.path.append("../baseclass")
-from FSM_Gen import gen as generate_MAS 
-from MultiAgent import MultiAgentSystem
-from prompts import *
-from CaseGen import case_gen
-from evolution.general_evolve import update_mas
+
+from baseclass.FSM_Gen import gen as generate_MAS 
+from baseclass.MultiAgent import MultiAgentSystem
+from baseclass.prompts import *
+from autodesign.CaseGen import case_gen
+from autodesign.evolution.general_evolve import update_mas
   
 
 # 初始化 colorama
@@ -36,7 +36,9 @@ def main(mas_saving_path, cases_saving_path, task_description):
         log(f"MAS Generation completed. Token Cost: {token_cost}", "success")
         
         # 添加evolution循环
-        max_iterations = 2
+
+        # Let's see where we can take this.
+        max_iterations = 10
         for iteration in range(max_iterations):
             log(f"\n=== Evolution Iteration {iteration + 1}/{max_iterations} ===", "info")
             
@@ -106,8 +108,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--task_description",
         type=str,
-        default='''Build a Multi-Agent system which can train machine learning model based on given dataset. 
-And report the expected metrics (like F-1 score, RMSE and etc. ) on test dataset to user.''',
+        default='''
+            come up with a comprehensive national transport policy.
+        ''',
 
     help="Path to save the generated test cases."  
     )

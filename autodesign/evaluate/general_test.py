@@ -1,8 +1,6 @@
 import sys
-sys.path.append("..")
-sys.path.append("../baseclass")
 
-from MultiAgent import MultiAgentSystem
+from baseclass.MultiAgent import MultiAgentSystem
 import json
 import os
 
